@@ -1,6 +1,6 @@
 #include "parser.hh"
 
-Parser::Parser() : cmd("") , x("") , y("") , e(-1) , o(0)
+Parser::Parser() : cmd(""), x(""), y(""), e(-1), o(0)
 {}
 
 

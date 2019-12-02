@@ -6,7 +6,6 @@
 using namespace std;
 
 class Parser {
-
 public:
     Parser();
     bool parse(int argc, char **argv);
