@@ -10,3 +10,6 @@ all:
 
 clean:
 	rm -rf $(TARGET)
+
+test:
+	tests/testsuite.sh
