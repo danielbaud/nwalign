@@ -7,6 +7,11 @@ echo
 
 echo -n "Making... "
 make -s
+if [ $? -ne 0 ]; then
+    echo
+    echo "Error in compilation"
+    exit 1
+fi
 echo "Done"
 
 
