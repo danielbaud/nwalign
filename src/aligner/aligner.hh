@@ -10,6 +10,7 @@ class Aligner {
 public:
     Aligner(const string& x, const string& y, double e, double o);
     bool checkSequencesType(char *name);
+    double gamma(double x) const;
     bool score() const;
     bool align() const;
 

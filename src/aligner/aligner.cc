@@ -26,6 +26,10 @@ bool Aligner::checkSequencesType(char *name) {
     return true;
 }
 
+double Aligner::gamma(double x) const {
+    return (this->e * x) + this->o;
+}
+
 
 bool Aligner::score() const {
     cout << "Score with:" << endl;
