@@ -1,8 +1,9 @@
+#include <fstream>
 #include "aligner.hh"
 #include "sequence.hh"
 
 Aligner::Aligner(const string& x, const string& y, double e, double o) :
-x(Sequence(x)), y(Sequence(y)), st(UNKNOWN), e(e), o(o)
+x(Sequence(x)), y(Sequence(y)), st(UNKNOWN), e(e), o(o), matrix({})
 {}
 
 bool Aligner::checkSequencesType(char *name) {
@@ -19,11 +20,36 @@ bool Aligner::checkSequencesType(char *name) {
         cerr << name << ": Sequences are not of the same type" << endl;
         return false;
     }
-    if (rna || dna)
+    if (rna || dna) {
         this->st = (SequenceType)(DNA | RNA);
-    else
+        this->parseMatrix("matrices/nucleic.mat");
+    }
+    else {
         this->st = PROT;
+        this->parseMatrix("matrices/blosum62.mat");
+    }
     return true;
+}
+
+void Aligner::parseMatrix(string path) {
+    ifstream file(path);
+    unsigned size;
+    file >> size;
+    vector<char> keys = {};
+    for (unsigned i = 0; i < size; ++i) {
+        char c;
+        file >> c;
+        keys.push_back(c);
+    }
+    for (unsigned i = 0; i < size; ++i) {
+        map<char, int> current = {};
+        int temp;
+        for (unsigned j = 0; j < size; ++j) {
+            file >> temp;
+            current.insert(pair<char, int>(keys[j], temp));
+        }
+        this->matrix.insert(pair<char, map<char, int>>(keys[i], current));
+    }
 }
 
 double Aligner::gamma(double x) const {
@@ -31,7 +57,8 @@ double Aligner::gamma(double x) const {
 }
 
 
-bool Aligner::score() const {
+bool Aligner::score(){
+    cout << this->matrix['n']['n'] << endl;
     cout << "Score with:" << endl;
     cout << "\tx = " << this->x.get_sequence() << endl;
     cout << "\ty = " << this->y.get_sequence() << endl;

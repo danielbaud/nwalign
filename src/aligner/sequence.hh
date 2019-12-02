@@ -21,6 +21,7 @@ private:
     string sequence;
     SequenceType type;
 
+    // SEQUENCES DICTIONARIES
     const set<char> dna {'A', 'T', 'G', 'C'};
     const set<char> rna {'A', 'U', 'G', 'C'};
     const set<char> prot {'A', 'R', 'N', 'D', 'C', 'Q', 

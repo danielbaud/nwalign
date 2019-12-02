@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <iostream>
-#include <list>
+#include <map>
+#include <vector>
 #include "sequence.hh"
 
 using namespace std;
@@ -10,8 +11,9 @@ class Aligner {
 public:
     Aligner(const string& x, const string& y, double e, double o);
     bool checkSequencesType(char *name);
+    void parseMatrix(string path);
     double gamma(double x) const;
-    bool score() const;
+    bool score();
     bool align() const;
 
 private:
@@ -20,4 +22,5 @@ private:
     SequenceType st;
     double e;
     double o;
+    map<char, map<char, int>> matrix;
 };
