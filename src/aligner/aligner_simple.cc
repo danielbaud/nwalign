@@ -2,6 +2,10 @@
 #include "aligner.hh"
 #include "sequence.hh"
 #include "../utils/utils.hh"
+#ifndef PATH
+#define PATH "."
+#endif
+
 
 Aligner::Aligner(const string& x, const string& y, double e, double o) :
 x(Sequence(x)), y(Sequence(y)), st(UNKNOWN), e(e), o(o), matrix({})
@@ -37,7 +41,8 @@ bool Aligner::checkSequencesType(char *name) {
 }
 
 void Aligner::parseMatrix(string path) {
-    ifstream file(path);
+    string P = PATH;
+    ifstream file(P + '/' + path);
     unsigned size;
     file >> size;
     vector<char> keys = {};
