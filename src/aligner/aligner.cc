@@ -109,11 +109,11 @@ bool Aligner::align() {
     vector<vector<int>> s = vector<vector<int>>(l1 + 1, vector<int>(l2 + 1));
     vector<vector<pair<unsigned, unsigned>>> b = vector<vector<pair<unsigned, unsigned>>>(l1 + 1, vector<pair<unsigned, unsigned>>(l2 + 1, {0, 0}));
     for (unsigned i = 0; i <= l1; ++i) {
-        s[i][0] = i * this->e;
+        s[i][0] = this->gamma(i);
         b[i][0] = pair<unsigned, unsigned>(0, 0);
     }
     for (unsigned i = 0; i <= l2; ++i) {
-        s[0][i] = i * this->e;
+        s[0][i] = this->gamma(i);
         b[0][i] = pair<unsigned, unsigned>(0, 0);
     }
     for (unsigned i = 1; i <= l1; ++i) {
@@ -160,6 +160,8 @@ bool Aligner::align() {
             }
         }
         else {
+            if (d_i > 0 && d_j > 0)
+                return false;
             for (unsigned i = 0; i < d_i; ++i) {
                 res1 = seq1[l1-i-1] + res1;
                 res2 = '-' + res2;
@@ -168,7 +170,7 @@ bool Aligner::align() {
                 res1 = '-' + res1;
                 res2 = seq2[l2-i-1] + res2;
             }
-        }      
+        }
         l1 = p.first;
         l2 = p.second;        
     } while (l1 > 0 || l2 > 0);
