@@ -6,9 +6,10 @@ double max3(double a, double b, double c) {
 }
 
 double argmax3(double a, double b, double c) {
-    double ret = 0;
-    double d = a > b ? a : b;
-    ret = d == a ? 0 : 1;
-    d = c > d ? c : d;
-    return d == c ? 2 : ret;
+    double r = max3(a, b, c);
+    if (r == a)
+        return 0;
+    if (r == b)
+        return 1;
+    return 2;
 }
