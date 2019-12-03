@@ -21,17 +21,21 @@ bool Aligner::checkSequencesType(char *name) {
     bool dna = (x_type & DNA) && (y_type & DNA);
     bool rna = (x_type & RNA) && (y_type & RNA);
     bool prot = (x_type & PROT) && (y_type & PROT);
-    if (!dna && !rna && !prot) {
-        cerr << name << ": Sequences are not of the same type" << endl;
-        return false;
+    if (dna) {
+        this->st = DNA;
+        this->parseMatrix("matrices/dna.mat");
     }
-    if (rna || dna) {
-        this->st = (SequenceType)(DNA | RNA);
-        this->parseMatrix("matrices/nucleic.mat");
+    else if (rna) {
+        this->st = RNA;
+        this->parseMatrix("matrices/rna.mat");
     }
-    else {
+    else if (prot) {
         this->st = PROT;
         this->parseMatrix("matrices/blosum62.mat");
+    }
+    else {
+        cerr << name << ": Sequences are not of the same type" << endl;
+        return false;
     }
     return true;
 }
@@ -67,7 +71,7 @@ bool Aligner::score() {
     string seq2 = this->y.get_sequence();
     unsigned l1 = seq1.size();
     unsigned l2 = seq2.size();
-    vector<vector<int>> s = vector<vector<int>>(l1 + 1, vector<int>(l2 + 1));
+    vector<vector<double>> s = vector<vector<double>>(l1 + 1, vector<double>(l2 + 1));
     for (unsigned i = 0; i <= l1; ++i)
         s[i][0] = this->gamma(i);
     for (unsigned i = 0; i <= l2; ++i)
@@ -89,7 +93,7 @@ bool Aligner::score() {
             s[i][j] = max3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], max_i, max_j);
         }
     }
-    cout << s[l1][l2] << endl;
+    printf("%.1f\n", s[l1][l2]);
     return true;
 }
 

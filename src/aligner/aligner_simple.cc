@@ -67,7 +67,7 @@ bool Aligner::score() {
     string seq2 = this->y.get_sequence();
     unsigned l1 = seq1.size();
     unsigned l2 = seq2.size();
-    vector<vector<int>> s = vector<vector<int>>(l1 + 1, vector<int>(l2 + 1));
+    vector<vector<double>> s = vector<vector<double>>(l1 + 1, vector<double>(l2 + 1));
     for (unsigned i = 0; i <= l1; ++i)
         s[i][0] = i * this->e;
     for (unsigned i = 0; i <= l2; ++i)
@@ -77,7 +77,7 @@ bool Aligner::score() {
             s[i][j] = max3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], this->e + s[i-1][j], this->e + s[i][j-1]);
         }
     }
-    cout << s[l1][l2] << endl;
+    printf("%.1f\n", s[l1][l2]);
     return true;
 }
 
