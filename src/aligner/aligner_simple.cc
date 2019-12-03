@@ -8,7 +8,7 @@ x(Sequence(x)), y(Sequence(y)), st(UNKNOWN), e(e), o(o), matrix({})
 {}
 
 bool Aligner::checkSequencesType(char *name) {
-    if (e > 0 || o > 0) {
+    if (e < 0 || o < 0) {
         cerr << name << ": gamma values e and o must be <= 0" << endl;
         return false;
     }
@@ -69,24 +69,12 @@ bool Aligner::score() {
     unsigned l2 = seq2.size();
     vector<vector<int>> s = vector<vector<int>>(l1 + 1, vector<int>(l2 + 1));
     for (unsigned i = 0; i <= l1; ++i)
-        s[i][0] = this->gamma(i);
+        s[i][0] = i * this->e;
     for (unsigned i = 0; i <= l2; ++i)
-        s[0][i] = this->gamma(i);
+        s[0][i] = i * this->e;
     for (unsigned i = 1; i <= l1; ++i) {
         for (unsigned j = 1; j <= l2; ++j) {
-            double max_i = this->gamma(1) + s[i-1][j];
-            for (unsigned k = 2; k <= i; k++) {
-                double temp = this->gamma(k) + s[i-k][j];
-                if (temp > max_i)
-                    max_i = temp;
-            }
-            double max_j = this->gamma(1) + s[i][j-1];
-            for (unsigned k = 2; k <= j; k++) {
-                double temp = this->gamma(k) + s[i][j-k];
-                if (temp > max_j)
-                    max_j = temp;
-            }
-            s[i][j] = max3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], max_i, max_j);
+            s[i][j] = max3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], this->e + s[i-1][j], this->e + s[i][j-1]);
         }
     }
     cout << s[l1][l2] << endl;
