@@ -9,10 +9,21 @@ The project is made with c++17 with STL data types
 
 ### Compilation
 
-To produce the _nwalign_ binary, do the following:
+
+
+There are two ways to produce the _nwalign_ binary. To produce the binary with the first implementation (ignoring _o_), do:
+```bash
+$ make nwalign_simple
+```
+To produce the binary with the second implementation (that is a bit slower but takes _o_ into account), do:
+```bash
+$ make nwalign
+```
+By default, the second version is made doing
 ```bash
 $ make
 ```
+The second version being the most complete, it will be the one used in the usage and example parts. We just made possible to compile a faster version, since it is possible to prefer it to the second one in a realistic context.
 ## Usage
 
 To compute the alignment score of two sequences, do:
