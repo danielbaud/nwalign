@@ -8,7 +8,7 @@ x(Sequence(x)), y(Sequence(y)), st(UNKNOWN), e(e), o(o), matrix({})
 {}
 
 bool Aligner::checkSequencesType(char *name) {
-    if (e < 0 || o < 0) {
+    if (e > 0 || o > 0) {
         cerr << name << ": gamma values e and o must be <= 0" << endl;
         return false;
     }

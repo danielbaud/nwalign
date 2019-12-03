@@ -102,22 +102,40 @@ bool Aligner::align() {
     vector<vector<pair<unsigned, unsigned>>> b = vector<vector<pair<unsigned, unsigned>>>(l1 + 1, vector<pair<unsigned, unsigned>>(l2 + 1, {0, 0}));
     for (unsigned i = 0; i <= l1; ++i) {
         s[i][0] = i * this->e;
-        b[i][0] = pair<unsigned, unsigned>({i-1, 0});
+        b[i][0] = pair<unsigned, unsigned>({0, 0});
     }
     for (unsigned i = 0; i <= l2; ++i) {
         s[0][i] = i * this->e;
-        b[0][i] = pair<unsigned, unsigned>({0, i-1});
+        b[0][i] = pair<unsigned, unsigned>({0, 0});
     }
     for (unsigned i = 1; i <= l1; ++i) {
         for (unsigned j = 1; j <= l2; ++j) {
-            s[i][j] = max3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], this->e + s[i-1][j], this->e + s[i][j-1]);
-            int index = argmax3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], this->e + s[i-1][j], this->e + s[i][j-1]);
+            double max_i = this->gamma(1) + s[i-1][j];
+            int k_i = 1;
+            for (unsigned k = 2; k <= i; k++) {
+                double temp = this->gamma(k) + s[i-k][j];
+                if (temp > max_i) {
+                    max_i = temp;
+                    k_i = k;
+                }
+            }
+            double max_j = this->gamma(1) + s[i][j-1];
+            int k_j = 1;
+            for (unsigned k = 2; k <= j; k++) {
+                double temp = this->gamma(k) + s[i][j-k];
+                if (temp > max_j) {
+                    max_j = temp;
+                    k_j = k;
+                }
+            }
+            s[i][j] = max3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], max_i, max_j);
+            int index = argmax3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], max_i, max_j);
             if (index == 0) {
                 b[i][j] = pair(i-1, j-1);
             } else if (index == 1) {
-                b[i][j] = pair(i-1, j);
+                b[i][j] = pair(i-k_i, j);
             } else {
-                b[i][j] = pair(i, j-1);
+                b[i][j] = pair(i, j-k_j);
             }
         }
     }
@@ -125,14 +143,22 @@ bool Aligner::align() {
     string res2 = "";
     do {
         pair<unsigned, unsigned> p = b[l1][l2];
-        if (p.first == l1 - 1)
+        if (p.first == l1 - 1 && p.second == l2 - 1) {
             res1 = seq1[l1-1] + res1;
-        else
-            res1 = '-' + res1;
-        if (p.second == l2 - 1)
             res2 = seq2[l2-1] + res2;
-        else
-            res2 = '-' + res2;
+        }
+        else if (p.first < l1) {
+            for (unsigned i = l1 - 1; i >= l1 - p.first; --i) {
+                res1 = seq1[i] + res1;
+                res2 = '-' + res2;
+            }
+        }
+        else {
+            for (unsigned i = l2 -1; i >= l2 - p.second; --i) {
+                res1 = '-' + res1;
+                res2 = seq2[i] + res2;
+            }
+        }
         l1 = p.first;
         l2 = p.second;        
     } while (l1 > 0 || l2 > 0);
