@@ -6,7 +6,6 @@
 #define PATH "."
 #endif
 
-
 Aligner::Aligner(const string& x, const string& y, double e, double o) :
 x(Sequence(x)), y(Sequence(y)), st(UNKNOWN), e(e), o(o), matrix({})
 {}
