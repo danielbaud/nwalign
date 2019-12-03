@@ -14,7 +14,7 @@ public:
     void parseMatrix(string path);
     double gamma(double x) const;
     bool score();
-    bool align() const;
+    bool align();
 
 private:
     Sequence x;
