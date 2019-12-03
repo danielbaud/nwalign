@@ -25,17 +25,21 @@ bool Aligner::checkSequencesType(char *name) {
     bool dna = (x_type & DNA) && (y_type & DNA);
     bool rna = (x_type & RNA) && (y_type & RNA);
     bool prot = (x_type & PROT) && (y_type & PROT);
-    if (!dna && !rna && !prot) {
-        cerr << name << ": Sequences are not of the same type" << endl;
-        return false;
+    if (dna) {
+        this->st = DNA;
+        this->parseMatrix("matrices/dna.mat");
     }
-    if (rna || dna) {
-        this->st = (SequenceType)(DNA | RNA);
-        this->parseMatrix("matrices/nucleic.mat");
+    else if (rna) {
+        this->st = RNA;
+        this->parseMatrix("matrices/rna.mat");
     }
-    else {
+    else if (prot) {
         this->st = PROT;
         this->parseMatrix("matrices/blosum62.mat");
+    }
+    else {
+        cerr << name << ": Sequences are not of the same type" << endl;
+        return false;
     }
     return true;
 }
