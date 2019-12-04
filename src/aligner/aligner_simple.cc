@@ -94,7 +94,7 @@ bool Aligner::align() {
     string seq2 = this->y.get_sequence();
     unsigned l1 = seq1.size();
     unsigned l2 = seq2.size();
-    vector<vector<int>> s = vector<vector<int>>(l1 + 1, vector<int>(l2 + 1));
+    vector<vector<double>> s = vector<vector<double>>(l1 + 1, vector<double>(l2 + 1));
     vector<vector<pair<unsigned, unsigned>>> b = vector<vector<pair<unsigned, unsigned>>>(l1 + 1, vector<pair<unsigned, unsigned>>(l2 + 1, {0, 0}));
     for (unsigned i = 0; i <= l1; ++i) {
         s[i][0] = i * this->e;
