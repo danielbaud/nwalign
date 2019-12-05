@@ -2,12 +2,12 @@ CXX = g++
 CXXFLAGS = -Werror -Wall -Wextra -pedantic -std=c++17
 
 SRC = src/parser/parser.cc src/aligner/aligner.cc \
-		src/aligner/sequence.cc src/utils/utils.cc \
-		src/main.cc
+		src/aligner/aligner_common.cc src/aligner/sequence.cc \
+		src/utils/utils.cc src/main.cc
 
-SRC_SIMPLE = src/parser/parser.cc src/aligner/aligner_simple.cc \
-		src/aligner/sequence.cc src/utils/utils.cc \
-		src/main.cc
+SRC_SIMPLE = src/parser/parser.cc src/aligner/aligner \
+		src/aligner/aligner_simple.cc src/aligner/sequence.cc \
+		src/utils/utils.cc src/main.cc
 
 TARGET = nwalign
 

@@ -11,7 +11,7 @@ class Aligner {
 public:
     Aligner(const string& x, const string& y, double e, double o);
     bool checkSequencesType(char *name);
-    void parseMatrix(string path);
+    bool parseMatrix(string path);
     double gamma(double x) const;
     bool score();
     bool align();
