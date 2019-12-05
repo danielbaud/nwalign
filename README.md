@@ -24,6 +24,14 @@ By default, the second version is made doing
 $ make
 ```
 The second version being the most complete, it will be the one used in the usage and example parts. We just made possible to compile a faster version, since it is possible to prefer it to the second one in a realistic context.
+
+Since the substitution matrices are stored in files in the project (in _matrices/_), the project folder **must not** be moved after compiling, since the absolute path of the matrices folder is given at compile time.
+However, the _nwalign_ binary can be executed from anywhere.
+
+To remove the produced files, just do:
+```bash
+$ make clean
+```
 ## Usage
 
 To compute the alignment score of two sequences, do:
@@ -47,11 +55,34 @@ To do so, do:
 Here are some example of usage:
 
 ```bash
-$ example1
-example1 out
+$ ./nwalign score TTAATCGGATCGGATC GAAATCGCTAA
+-2.0
 ```
 
 ```bash
-$ example2
-example2 out
+$ ./nwalign align TTAATCGGATCGGATC GAAATCGCTAA
+TTAATCGGATCGGATC
+GAAATC-G--C-TA-A
+```
+
+```bash
+$ ./nwalign score HDGDYSCDKSLZIKZDYHQNNS FEZFKEILPMMSCGTDTGZ
+8.0
+```
+
+```bash
+$ ./nwalign align HDGDYSCDKSLZIKZDYHQNNS FEZFKEILPMMSCGTDTGZ
+HDGDYSCDKS-L-ZIK--ZDYHQNNS
+FE-ZF---KEILPMMSCGTD---TGZ
+```
+
+```bash
+$ ./nwalign --gamma=-2,-2 score GCTDHFYEHDYZHDTCGZTDFZDTLM DZGDYGCCZPIKZASKDDY
+-3.0
+```
+
+```bash
+$ ./nwalign --gamma=-2,-2 align GCTDHFYEHDYZHDTCGZTDFZDTLM DZGDYGCCZPIKZASKDDY
+GCTDHFYEHDYZHDTC---GZTDFZDTLM
+---D---ZGDY--GCCZPIKZAS-KDD-Y
 ```
