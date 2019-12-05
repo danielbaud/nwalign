@@ -5,7 +5,7 @@ SRC = src/parser/parser.cc src/aligner/aligner.cc \
 		src/aligner/aligner_common.cc src/aligner/sequence.cc \
 		src/utils/utils.cc src/main.cc
 
-SRC_SIMPLE = src/parser/parser.cc src/aligner/aligner \
+SRC_SIMPLE = src/parser/parser.cc src/aligner/aligner.cc \
 		src/aligner/aligner_simple.cc src/aligner/sequence.cc \
 		src/utils/utils.cc src/main.cc
 

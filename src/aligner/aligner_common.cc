@@ -6,7 +6,6 @@ double Aligner::gamma(double x) const {
     return (this->e * x) + this->o;
 }
 
-
 bool Aligner::score() {
     string seq1 = this->x.get_sequence();
     string seq2 = this->y.get_sequence();

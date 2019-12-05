@@ -2,9 +2,8 @@
 #include "sequence.hh"
 #include "../utils/utils.hh"
 
-
 double Aligner::gamma(double x) const {
-    return (this->e * x) + this->o;
+    return (this->e * x);
 }
 
 
@@ -15,9 +14,9 @@ bool Aligner::score() {
     unsigned l2 = seq2.size();
     vector<vector<double>> s = vector<vector<double>>(l1 + 1, vector<double>(l2 + 1));
     for (unsigned i = 0; i <= l1; ++i)
-        s[i][0] = i * this->e;
+        s[i][0] = this->gamma(i);
     for (unsigned i = 0; i <= l2; ++i)
-        s[0][i] = i * this->e;
+        s[0][i] = this->gamma(i);
     for (unsigned i = 1; i <= l1; ++i) {
         for (unsigned j = 1; j <= l2; ++j) {
             s[i][j] = max3(this->matrix[seq1[i-1]][seq2[j-1]] + s[i-1][j-1], this->e + s[i-1][j], this->e + s[i][j-1]);
@@ -35,11 +34,11 @@ bool Aligner::align() {
     vector<vector<double>> s = vector<vector<double>>(l1 + 1, vector<double>(l2 + 1));
     vector<vector<pair<unsigned, unsigned>>> b = vector<vector<pair<unsigned, unsigned>>>(l1 + 1, vector<pair<unsigned, unsigned>>(l2 + 1, {0, 0}));
     for (unsigned i = 0; i <= l1; ++i) {
-        s[i][0] = i * this->e;
+        s[i][0] = this->gamma(i);
         b[i][0] = pair<unsigned, unsigned>({i-1, 0});
     }
     for (unsigned i = 0; i <= l2; ++i) {
-        s[0][i] = i * this->e;
+        s[0][i] = this->gamma(i);
         b[0][i] = pair<unsigned, unsigned>({0, i-1});
     }
     for (unsigned i = 1; i <= l1; ++i) {
